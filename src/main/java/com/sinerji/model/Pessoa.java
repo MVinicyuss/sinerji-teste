@@ -77,6 +77,14 @@ public class Pessoa implements Serializable {
 		return Objects.hash(id);
 	}
 
+	public ArrayList<Endereco> getListaEnderecos() {
+		return listaEnderecos;
+	}
+
+	public void setListaEnderecos(ArrayList<Endereco> listaEnderecos) {
+		this.listaEnderecos = listaEnderecos;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

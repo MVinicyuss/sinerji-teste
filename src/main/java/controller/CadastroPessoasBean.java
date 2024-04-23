@@ -35,7 +35,7 @@ public class CadastroPessoasBean implements Serializable {
 
 	@Inject
 	private CadastroPessoaService cadastroPessoaService;
-	
+
 	@Inject
 	private CadastroEnderecoService cadastroEnderecoService;
 
@@ -43,48 +43,47 @@ public class CadastroPessoasBean implements Serializable {
 	private Pessoa pessoa = new Pessoa();
 
 	// Atributo para guardar a lista de pessoas cadastradas
-	private List<Pessoa> pessoasLista = new ArrayList<Pessoa>();
+	private ArrayList<Pessoa> pessoasLista = new ArrayList<Pessoa>();
 
 	// Atributo para guardar um endereço
 	private Endereco endereco = new Endereco();
 
 	// Atributo para guardar a lista de endereços de uma pessoa
-	private List<Endereco> enderecosLista = new ArrayList<Endereco>();
+	private ArrayList<Endereco> enderecosLista = new ArrayList<Endereco>();
 
-	public String salvar() {
+	public void novaPessoa() {
+		pessoa = new Pessoa();
+	}
+	
+	public void novoEndereco() {
+		endereco = new Endereco();
+	}
+	
+	public void salvar() {
 		if (pessoa.getNome().isBlank()) {
-			return null;
-		}
-		if (pessoa.getIdade() == 0) {
-			return null;
+			return;
 		}
 		if (pessoa.getSexo() == '\0') {
 			// O char está vazio
-			return null;
+			return;
 		}
 		if (enderecosLista.size() < 0) {
-			return null;
+			return;
+		}
+
+		if(!enderecosLista.isEmpty()) {
+			pessoa.setListaEnderecos(enderecosLista);
 		}
 		
-		Pessoa novaPessoa = new Pessoa();
-		novaPessoa.setNome(pessoa.getNome());
-		novaPessoa.setIdade(pessoa.getIdade());
-		novaPessoa.setSexo(pessoa.getSexo());
-		cadastroPessoaService.salvar(novaPessoa);
+		cadastroPessoaService.salvar(pessoa);
+
+		messages.info("Pessoa Cadastrada");
 		
-
-		return "ListaDePessoas.xhtml";
-
+		novaPessoa();
+		novoEndereco();
 	}
 
 	public void adicionarEndereco() {
-
-		if (endereco.getEstado().isEmpty() || endereco.getCidade().isEmpty() || endereco.getLogradouro().isEmpty()
-				|| endereco.getNumero() == 0 || endereco.getCep().isEmpty()) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", "Preencha todos os campos do endereço."));
-			return;
-		}
 
 		Endereco novoEndereco = new Endereco();
 		novoEndereco.setEstado(endereco.getEstado());
@@ -97,7 +96,15 @@ public class CadastroPessoasBean implements Serializable {
 		enderecosLista.add(novoEndereco);
 
 		// Limpa o campo de entrada do endereço
-		endereco = new Endereco();
+		novoEndereco();
+	}
+	
+	public void removerEndereco(Endereco endereco) {
+		enderecosLista.remove(endereco);
+	}
+
+	public String paginaListaDeCadastrados() {
+		return "ListaDePessoas?faces-redirect=true";
 	}
 
 	// Getters e Setters
@@ -114,7 +121,7 @@ public class CadastroPessoasBean implements Serializable {
 		return pessoasLista;
 	}
 
-	public void setPessoas(List<Pessoa> pessoas) {
+	public void setPessoas(ArrayList<Pessoa> pessoas) {
 		this.pessoasLista = pessoas;
 	}
 
@@ -122,7 +129,7 @@ public class CadastroPessoasBean implements Serializable {
 		return enderecosLista;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
+	public void setEnderecos(ArrayList<Endereco> enderecos) {
 		this.enderecosLista = enderecos;
 	}
 

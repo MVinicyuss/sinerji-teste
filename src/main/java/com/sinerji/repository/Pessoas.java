@@ -1,11 +1,16 @@
 package com.sinerji.repository;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+
+import com.sinerji.model.Endereco;
 import com.sinerji.model.Pessoa;
+
+import service.CadastroEnderecoService;
 
 public class Pessoas implements Serializable {
 
@@ -13,6 +18,9 @@ public class Pessoas implements Serializable {
 
 	@Inject
 	private EntityManager manager;
+	
+	@Inject
+	private CadastroEnderecoService cadastroEndereco;
 
 	public Pessoas() {
 
@@ -37,7 +45,21 @@ public class Pessoas implements Serializable {
 	}
 
 	public Pessoa guardar(Pessoa pessoa) {
-		return manager.merge(pessoa);
+		Pessoa mergedPerson;
+		if(!pessoa.getListaEnderecos().isEmpty()) {
+			ArrayList<Endereco> enderecos = pessoa.getListaEnderecos();
+			
+			pessoa.setListaEnderecos(new ArrayList<Endereco>());
+			mergedPerson = manager.merge(pessoa);
+			
+			for (Endereco endereco : enderecos) {
+				endereco.setId_pessoa(mergedPerson);
+				cadastroEndereco.salvar(endereco);
+			}
+		}else {
+			mergedPerson = manager.merge(pessoa);
+		}
+		return mergedPerson;
 	}
 
 	public void remover(Pessoa pessoa) {

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
 
 	<meta charset="UTF-8" />
@@ -12,51 +13,120 @@
 </h:head>
 
 <h:body>
+	<!-- Navbar -->
+	<div class="navbar">
+		<ul>
+			<!--<li><h:link value="Cadastro de Pessoas"
+						action="#{ListaDePessoasBean.paginaDeCadastro}" /></li>  -->
+			<li><h:link value="Lista de Cadastrados"
+					action="#{cadastroPessoasBean.paginaListaDeCadastrados}" /></li>
+		</ul>
+	</div>
 	<div id="conteudo">
 		<h:form>
 			<!-- Componente para os dados da pessoa -->
 			<div class="form-panel">
-				<h:outputLabel for="nome" value="Nome:" />
-				<h:inputText id="nome" value="#{cadastroPessoasBean.pessoa.nome}" />
 
-				<h:outputLabel for="idade" value="Idade:" />
-				<h:inputText id="idade" value="#{cadastroPessoasBean.pessoa.idade}" />
+				<h:panelGroup>
+					<h:outputLabel for="nome" value="Nome:" />
+					<h:inputText id="nome" value="#{cadastroPessoasBean.pessoa.nome}"
+						label="Nome" required="true" />
+					<br />
+					<h:message for="nome" style="color: red" />
+					<br />
+				</h:panelGroup>
 
-				<h:outputLabel for="sexo" value="Sexo:" />
-				<h:selectOneMenu id="sexo"
-					value="#{cadastroPessoasBean.pessoa.sexo}">
-					<f:selectItem itemLabel="Selecione.." itemValue=" "/>
-					<f:selectItem itemLabel="Masculino" itemValue="M" />
-					<f:selectItem itemLabel="Feminino" itemValue="F" />
-				</h:selectOneMenu>
+				<h:panelGroup>
+
+					<h:outputLabel for="idade" value="Idade:" />
+					<h:inputText id="idade" value="#{cadastroPessoasBean.pessoa.idade}"
+						label="Idade" required="true">
+						<f:validateDoubleRange minimum="0" />
+					</h:inputText>
+					<br />
+					<h:message for="idade" style="color: red" />
+					<br />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<h:outputLabel for="sexo" value="Sexo:" />
+					<h:selectOneMenu id="sexo"
+						value="#{cadastroPessoasBean.pessoa.sexo}" label="Sexo"
+						required="true">
+						<f:selectItem itemLabel="Selecione.." itemValue=" " />
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+						<f:selectItem itemLabel="Feminino" itemValue="F" />
+					</h:selectOneMenu>
+					<br />
+					<h:message for="sexo" style="color: red" />
+					<br />
+				</h:panelGroup>
+				<!-- Botão de Salvar -->
+				<div class="button-panel">
+					<h:commandButton value="Salvar"
+						actionListener="#{cadastroPessoasBean.salvar}"
+						styleClass="button-style" />
+				</div>
 			</div>
+		</h:form>
 
+		<h:form>
 			<!-- Componente para adicionar endereços -->
 			<div class="form-panel" id="enderecoPanel">
-				<h:outputText value="Estado: " />
-				<h:inputText id="estado"
-					value="#{cadastroPessoasBean.endereco.estado}" />
-				<h:message for="estado" style="color: red" />
-				
-				<br />
-				<h:outputText value="Cidade: " />
-				<h:inputText id="cidade"
-					value="#{cadastroPessoasBean.endereco.cidade}" />
+				<h:panelGroup>
+					<h:outputText value="Estado: " />
+					<h:inputText id="estado"
+						value="#{cadastroPessoasBean.endereco.estado}" required="true" />
+					<br />
+					<h:message for="estado" style="color: red" />
+					<br />
+				</h:panelGroup>
 
 				<br />
-				<h:outputText value="Logradouro: " />
-				<h:inputText id="logradouro"
-					value="#{cadastroPessoasBean.endereco.logradouro}" />
+
+				<h:panelGroup>
+					<h:outputText value="Cidade: " />
+					<h:inputText id="cidade"
+						value="#{cadastroPessoasBean.endereco.cidade}" required="true" />
+					<br />
+					<h:message for="cidade" style="color: red" />
+					<br />
+				</h:panelGroup>
 
 				<br />
-				<h:outputText value="Número: " />
-				<h:inputText id="numero"
-					value="#{cadastroPessoasBean.endereco.numero}" />
+
+				<h:panelGroup>
+					<h:outputText value="Logradouro: " />
+					<h:inputText id="logradouro"
+						value="#{cadastroPessoasBean.endereco.logradouro}" required="true" />
+					<br />
+					<h:message for="logradouro" style="color: red" />
+					<br />
+				</h:panelGroup>
 
 				<br />
-				<h:outputText value="CEP: " />
-				<h:inputText id="cep" value="#{cadastroPessoasBean.endereco.cep}" />
 
+				<h:panelGroup>
+					<h:outputText value="Número: " />
+					<h:inputText id="numero"
+						value="#{cadastroPessoasBean.endereco.numero}" />
+					<br />
+					<h:message for="numero" style="color: red" />
+					<br />
+				</h:panelGroup>
+
+				<br />
+
+				<h:panelGroup>
+					<h:outputText value="CEP: " />
+					<h:inputText id="cep" value="#{cadastroPessoasBean.endereco.cep}"
+						required="true">
+						<f:validateLength minimum="5" maximum="8" />
+					</h:inputText>
+					<br />
+					<h:message for="cep" style="color: red" />
+					<br />
+				</h:panelGroup>
 				<br />
 				<!-- Botão de Adicionar Endereço -->
 				<div class="button-panel">
@@ -64,13 +134,6 @@
 						actionListener="#{cadastroPessoasBean.adicionarEndereco}"
 						styleClass="button-style" />
 				</div>
-			</div>
-
-			<!-- Botão de Salvar -->
-			<div class="button-panel">
-				<h:commandButton value="Salvar"
-					actionListener="#{cadastroPessoasBean.salvar}"
-					styleClass="button-style" />
 			</div>
 		</h:form>
 		<!-- DataTable para exibir os endereços adicionados -->
@@ -96,6 +159,11 @@
 				<f:facet name="header">CEP</f:facet>
         #{endereco.cep}
     </h:column>
+			<h:column>
+				<f:facet name="header">Ações</f:facet>
+				<h:commandButton value="Remover"
+					action="#{cadastroPessoasBean.removerEndereco(endereco)}" />
+			</h:column>
 		</h:dataTable>
 	</div>
 </h:body>

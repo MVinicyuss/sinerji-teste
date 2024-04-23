@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.5.7.Final</version>
+			<version>5.4.27.Final</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -81,7 +81,7 @@
 			<plugin>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.51</version>
+				<version>3.5.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
