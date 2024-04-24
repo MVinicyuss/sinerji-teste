@@ -4,17 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import com.sinerji.model.Endereco;
 import com.sinerji.model.Pessoa;
-import com.sinerji.repository.Enderecos;
-import com.sinerji.repository.Pessoas;
 
-import service.CadastroEnderecoService;
 import service.CadastroPessoaService;
 import util.FacesMessages;
 
@@ -25,19 +21,11 @@ public class CadastroPessoasBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private Pessoas pessoas;
-
-	@Inject
-	private Enderecos enderecos;
-
-	@Inject
 	private FacesMessages messages;
 
 	@Inject
 	private CadastroPessoaService cadastroPessoaService;
 
-	@Inject
-	private CadastroEnderecoService cadastroEnderecoService;
 
 	// Atributo para guardar uma pessoa
 	private Pessoa pessoa = new Pessoa();
@@ -57,6 +45,10 @@ public class CadastroPessoasBean implements Serializable {
 	
 	public void novoEndereco() {
 		endereco = new Endereco();
+	}
+	
+	public void novoListaEndereco() {
+		enderecosLista = new ArrayList<Endereco>();
 	}
 	
 	public void salvar() {
@@ -81,6 +73,7 @@ public class CadastroPessoasBean implements Serializable {
 		
 		novaPessoa();
 		novoEndereco();
+		novoListaEndereco();
 	}
 
 	public void adicionarEndereco() {
@@ -104,7 +97,7 @@ public class CadastroPessoasBean implements Serializable {
 	}
 
 	public String paginaListaDeCadastrados() {
-		return "ListaDePessoas?faces-redirect=true";
+		return "ListaDePessoas.xhtml?faces-redirect=true";
 	}
 
 	// Getters e Setters
