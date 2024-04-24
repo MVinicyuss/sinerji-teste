@@ -70,7 +70,7 @@
 			</div>
 		</h:form>
 
-		<h:form>
+		<h:form id="formEndereco">
 			<!-- Componente para adicionar endereços -->
 			<div class="form-panel" id="enderecoPanel">
 				<h:panelGroup>
@@ -132,39 +132,45 @@
 				<div class="button-panel">
 					<h:commandButton value="Adicionar Endereço"
 						actionListener="#{cadastroPessoasBean.adicionarEndereco}"
-						styleClass="button-style" />
+						styleClass="button-style">
+						<f:ajax execute="@form" render="formEndereco :formTabela:tableEnderecos" />
+					</h:commandButton>
 				</div>
 			</div>
 		</h:form>
 		<!-- DataTable para exibir os endereços adicionados -->
 		<h2>Endereços a serem salvos</h2>
-		<h:dataTable value="#{cadastroPessoasBean.enderecos}" var="endereco">
-			<h:column>
-				<f:facet name="header">Estado</f:facet>
+		<h:form id="formTabela">
+			<h:dataTable id="tableEnderecos"
+				value="#{cadastroPessoasBean.enderecos}" var="endereco">
+				<h:column>
+					<f:facet name="header">Estado</f:facet>
         #{endereco.estado}
     </h:column>
-			<h:column>
-				<f:facet name="header">Cidade</f:facet>
+				<h:column>
+					<f:facet name="header">Cidade</f:facet>
         #{endereco.cidade}
     </h:column>
-			<h:column>
-				<f:facet name="header">Logradouro</f:facet>
+				<h:column>
+					<f:facet name="header">Logradouro</f:facet>
         #{endereco.logradouro}
     </h:column>
-			<h:column>
-				<f:facet name="header">Número</f:facet>
+				<h:column>
+					<f:facet name="header">Número</f:facet>
         #{endereco.numero}
     </h:column>
-			<h:column>
-				<f:facet name="header">CEP</f:facet>
+				<h:column>
+					<f:facet name="header">CEP</f:facet>
         #{endereco.cep}
     </h:column>
-			<h:column>
-				<f:facet name="header">Ações</f:facet>
-				<h:commandButton value="Remover"
-					action="#{cadastroPessoasBean.removerEndereco(endereco)}" />
-			</h:column>
-		</h:dataTable>
+				<h:column>
+					<h:commandButton value="Remover"
+						action="#{cadastroPessoasBean.removerEndereco(endereco)}">
+						<f:ajax execute="@this" render="formTabela:tableEnderecos" />
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+		</h:form>
 	</div>
 </h:body>
 

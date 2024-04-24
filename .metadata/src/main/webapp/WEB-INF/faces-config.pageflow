@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf17139596781960" configfile="/sinerji-teste/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="178" id="pf17139596856771" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf17139596856782" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="ListaDePessoas.xhtml" x="338" y="178" id="pf17139596856783" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf17139596856782" path="/ListaDePessoas.xhtml"/>
+  <links id="pf17139596856782" target="pf17139596856783" source="pf17139596856771" outcome="ListaDePessoas.xhtml?faces-redirect=true" redirect="true"/>
+</pageflow:Pageflow>

@@ -10,4 +10,13 @@
 		</locale-config>
 	</application>
 
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>ListaDePessoas.xhtml?faces-redirect=true</from-outcome>
+			<to-view-id>/ListaDePessoas.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
 </faces-config>

@@ -1,9 +1,11 @@
 package controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -92,12 +94,13 @@ public class CadastroPessoasBean implements Serializable {
 		novoEndereco();
 	}
 	
-	public void removerEndereco(Endereco endereco) {
-		enderecosLista.remove(endereco);
+	public void removerEndereco(Endereco enderecoRemover) {
+		enderecosLista.remove(enderecoRemover);
 	}
 
-	public String paginaListaDeCadastrados() {
-		return "ListaDePessoas.xhtml?faces-redirect=true";
+	public void paginaListaDeCadastrados() throws IOException {
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().redirect("ListaDePessoas.xhtml?faces-redirect=true");
 	}
 
 	// Getters e Setters
