@@ -5,6 +5,7 @@ Este projeto foi desenvolvido como um teste para uma vaga de emprego. Ele demons
 ## Estrutura das Pastas
 
 O projeto está organizado da seguinte maneira:
+Dessa forma, consegui ter uma boa separação de onde cada escopo agia, e pude encontrar rapidamente os principais problemas ao debugar o código.
 
 - `src/`: Esta pasta contém todo o código-fonte do projeto.
   - `main/`: Aqui estão todas as pastas principais do projeto.
