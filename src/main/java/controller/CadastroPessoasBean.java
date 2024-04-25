@@ -94,10 +94,8 @@ public class CadastroPessoasBean implements Serializable {
 		novoEndereco.setNumero(endereco.getNumero());
 		novoEndereco.setCep(endereco.getCep());
 
-		// Adiciona o novo endereço à lista de endereços
 		enderecosLista.add(novoEndereco);
 
-		// Limpa o campo de entrada do endereço
 		novoEndereco();
 	}
 	

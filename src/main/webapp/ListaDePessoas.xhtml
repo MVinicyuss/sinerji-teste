@@ -44,7 +44,7 @@
 										style="width: 100%;" /> <h:commandButton value="Remover"
 										action="#{cadastroPessoasBean.removerPessoa(pessoa)}"
 										style="width: 100%;">
-										<f:ajax execute="@this" render="formPessoasEnderecos" />
+										<f:ajax execute="@this" render="@all" />
 									</h:commandButton></td>
 								<td colspan="6" style="display: none"
 									id="camposEditarPessoa#{loop.index}"><h:form
@@ -100,7 +100,7 @@
 																	onclick="mostrarCamposEditarEndereco(#{contador})" />
 																<h:commandButton value="Remover"
 																	action="#{cadastroPessoasBean.removerEnderecoDePessoa(endereco)}">
-																	<f:ajax execute="@this" render="formPessoasEnderecos" />
+																	<f:ajax execute="@this" render="@all" />
 																</h:commandButton></td>
 															<td colspan="6" style="display: none"
 																id="camposEditarEndereco#{contador}"><h:form
@@ -128,7 +128,7 @@
 																	<h:commandButton value="Alterar Endereço"
 																		action="#{cadastroPessoasBean.editarEnderecoPessoaExistente(pessoa,endereco)}"
 																		styleClass="button-style">
-																		<f:ajax execute="@form" render="formPessoasEnderecos" />
+																		<f:ajax execute="@form" render="@all" />
 																	</h:commandButton>
 																</h:form></td>
 														</tr>
@@ -170,7 +170,7 @@
 												<h:commandButton value="Adicionar Endereço"
 													action="#{cadastroPessoasBean.adicionarEnderecoPessoaExistente(pessoa)}"
 													styleClass="button-style">
-													<f:ajax execute="@form" render="formPessoasEnderecos" />
+													<f:ajax execute="@form" render="@all" />
 												</h:commandButton>
 											</h:form></td>
 									</tr>
