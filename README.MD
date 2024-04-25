@@ -35,6 +35,8 @@ docker run -d --name mysql_database -p 3307:3306 -e MYSQL_ROOT_PASSWORD=1234 mys
 
 > :warning: **Aviso**: Se necessário, configure o arquivo `persistence.xml`
 
+> :warning: **Aviso**: Criar banco de dados com nome sinerjiteste
+
 Instale as dependencias do pom.xml:
 
 ```bash
