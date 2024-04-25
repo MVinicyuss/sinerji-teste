@@ -12,7 +12,9 @@ import javax.inject.Named;
 
 import com.sinerji.model.Endereco;
 import com.sinerji.model.Pessoa;
+import com.sinerji.repository.Pessoas;
 
+import service.CadastroEnderecoService;
 import service.CadastroPessoaService;
 import util.FacesMessages;
 
@@ -28,6 +30,11 @@ public class CadastroPessoasBean implements Serializable {
 	@Inject
 	private CadastroPessoaService cadastroPessoaService;
 
+	@Inject
+	private CadastroEnderecoService cadastroEnderecoService;
+	
+	@Inject
+	private Pessoas pessoas;
 
 	// Atributo para guardar uma pessoa
 	private Pessoa pessoa = new Pessoa();
@@ -97,10 +104,43 @@ public class CadastroPessoasBean implements Serializable {
 	public void removerEndereco(Endereco enderecoRemover) {
 		enderecosLista.remove(enderecoRemover);
 	}
+	
+	public void removerEnderecoDePessoa(Endereco enderecoRemover) {
+		cadastroEnderecoService.excluir(enderecoRemover);
+	}
 
 	public void paginaListaDeCadastrados() throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().redirect("ListaDePessoas.xhtml?faces-redirect=true");
+	}
+	
+	public ArrayList<Pessoa> getListaCadastrados() {
+		ArrayList<Pessoa> cadastrados = new ArrayList<Pessoa>();
+		cadastrados = (ArrayList<Pessoa>) pessoas.findAllComEnderecos();
+		return cadastrados;
+	}
+	
+	public void adicionarEnderecoPessoaExistente(Pessoa pessoaRecebendoEndereco){
+		Endereco novoEndereco = endereco;
+		if(novoEndereco.getEstado().isBlank()) {
+			return;
+		}
+		if(novoEndereco.getCidade().isBlank()) {
+			return;
+		}
+		if(novoEndereco.getLogradouro().isBlank()) {
+			return;
+		}
+		if(novoEndereco.getCep().isBlank()) {
+			return;
+		}
+		novoEndereco.setId_pessoa(pessoaRecebendoEndereco);
+		cadastroEnderecoService.salvar(novoEndereco);
+		endereco = new Endereco();
+	}
+	
+	public void removerPessoa(Pessoa pessoaRemovida) {
+		cadastroPessoaService.excluir(pessoaRemovida);
 	}
 
 	// Getters e Setters

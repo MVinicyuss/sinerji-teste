@@ -1,6 +1,7 @@
 package com.sinerji.repository;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,6 +50,18 @@ public class Enderecos implements Serializable{
 	
 	public void salvar(Endereco endereco) {
 		manager.merge(endereco);
+	}
+	
+	public ArrayList<Endereco> findAllEnderecoPorIdPessoa(Pessoa pessoa){
+		String sql2 = "from Endereco ender where ender.id_pessoa = :idPessoa";
+		   
+		TypedQuery<Endereco> query2 = manager.createQuery(sql2, Endereco.class);
+		
+		query2.setParameter("idPessoa", pessoa);
+		
+		ArrayList<Endereco> enderecosEncontrados = (ArrayList<Endereco>) query2.getResultList();
+		
+		return enderecosEncontrados;
 	}
 	
 	public void remover(Endereco endereco) {

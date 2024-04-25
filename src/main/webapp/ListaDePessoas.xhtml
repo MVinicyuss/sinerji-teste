@@ -1,12 +1,135 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
-<meta charset="UTF-8"/>
-<title>Lista de Pessoas Cadastradas</title>
+	<meta charset="UTF-8" />
+	<title>Lista de Pessoas Cadastradas</title>
+	<h:outputStylesheet library="sinerji" name="estilo.css" />
 </h:head>
 <h:body>
-
+	<!-- Navbar -->
+	<div class="navbar">
+		<a href="CadastroPessoa.xhtml" class="button-link">Página de
+			Cadastro</a> <a href="ListaDePessoas.xhtml" class="button-link">Lista
+			de Cadastrados</a>
+	</div>
+	<div>
+		<div style="text-align: center">
+			<h1>Cadastrados</h1>
+		</div>
+		<c:if test="#{not empty cadastroPessoasBean.listaCadastrados}">
+			<h:form id="formPessoasEnderecos">
+				<table border="1" style="margin: auto;">
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>Idade</th>
+							<th>Sexo</th>
+							<th>Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="#{cadastroPessoasBean.listaCadastrados}"
+							var="pessoa">
+							<tr>
+								<td>#{pessoa.nome}</td>
+								<td>#{pessoa.idade}</td>
+								<td>#{pessoa.sexo}</td>
+								<td><h:commandButton value="Editar"
+										action="#{cadastroPessoasBean.editarPessoa(pessoa)}"
+										style="width: 100%;" /> <h:commandButton value="Remover"
+										action="#{cadastroPessoasBean.removerPessoa(pessoa)}"
+										style="width: 100%;">
+										<f:ajax execute="@this" render="formPessoasEnderecos" />
+									</h:commandButton></td>
+							</tr>
+							<c:choose>
+								<c:when test="#{not empty pessoa.listaEnderecos}">
+									<tr>
+										<td colspan="4">
+											<table id="tabelaEnderecos" border="1" style="margin: auto;">
+												<thead>
+													<tr>
+														<th>Estado</th>
+														<th>Cidade</th>
+														<th>Logradouro</th>
+														<th>Número</th>
+														<th>CEP</th>
+														<th>Ações</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="#{pessoa.listaEnderecos}" var="endereco">
+														<tr>
+															<td>#{endereco.estado}</td>
+															<td>#{endereco.cidade}</td>
+															<td>#{endereco.logradouro}</td>
+															<td>#{endereco.numero}</td>
+															<td>#{endereco.cep}</td>
+															<td><h:commandButton value="Editar"
+																	action="#{cadastroPessoasBean.editarEndereco(endereco)}">
+																	<f:ajax execute="@this" render="tabelaEnderecos" />
+																</h:commandButton> <h:commandButton value="Remover"
+																	action="#{cadastroPessoasBean.removerEnderecoDePessoa(endereco)}">
+																	<f:ajax execute="@this" render="formPessoasEnderecos" />
+																</h:commandButton></td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<tr>
+										<td colspan="4">Esta pessoa não possui endereços. <h:commandButton
+												value="Criar Endereço" type="button"
+												onclick="mostrarCamposCriacaoEndereco()" />
+										</td>
+										<h:form>
+											<tr id="camposCriacaoEndereco2" style="display: none;">
+												<td colspan="6"><h:inputText id="estado"
+														value="#{cadastroPessoasBean.endereco.estado}"
+														label="Estado" /> <p:watermark for="estado"
+														value="Estado" /> <h:inputText id="cidade"
+														value="#{cadastroPessoasBean.endereco.cidade}"
+														label="Cidade" /> <p:watermark for="cidade"
+														value="Cidade" /> <h:inputText id="logradouro"
+														value="#{cadastroPessoasBean.endereco.logradouro}"
+														label="Logradouro" /> <p:watermark for="logradouro"
+														value="Logradouro" /> <h:inputText id="numero"
+														value="#{cadastroPessoasBean.endereco.numero}"
+														label="Numero" /> <p:watermark for="numero"
+														value="Numero" /> <h:inputText id="cep"
+														value="#{cadastroPessoasBean.endereco.cep}" label="CEP" />
+													<p:watermark for="cep" value="CEP" /> <h:commandButton
+														value="Adicionar Endereço"
+														actionListener="#{cadastroPessoasBean.adicionarEnderecoPessoaExistente(pessoa)}"
+														styleClass="button-style">
+														<f:ajax execute="@form" render="formPessoasEnderecos" />
+													</h:commandButton></td>
+											</tr>
+										</h:form>
+									</tr>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</tbody>
+				</table>
+			</h:form>
+		</c:if>
+	</div>
 </h:body>
+<script>
+	function mostrarCamposCriacaoEndereco() {
+		if (document.getElementById('camposCriacaoEndereco2').style.display == 'none') {
+			document.getElementById('camposCriacaoEndereco2').style.display = 'block';
+		} else {
+			document.getElementById('camposCriacaoEndereco2').style.display = 'none';
+		}
+	}
+</script>
 </html>

@@ -21,6 +21,9 @@ public class Pessoas implements Serializable {
 	
 	@Inject
 	private CadastroEnderecoService cadastroEndereco;
+	
+	@Inject
+	private Enderecos enderecos;
 
 	public Pessoas() {
 
@@ -43,6 +46,43 @@ public class Pessoas implements Serializable {
 		query.setParameter("nome", nome + "%");
 		return query.getResultList();
 	}
+	
+	public ArrayList<Pessoa> findAll(){
+		String sql = "from Pessoa "
+                + "";
+   
+		TypedQuery<Pessoa> query = manager.createQuery(sql, Pessoa.class);
+		
+		return (ArrayList<Pessoa>) query.getResultList();
+	}
+	
+	public List <Pessoa> findAllComEnderecos(){
+		
+		ArrayList<Pessoa> pessoasEncontradas = new ArrayList<Pessoa>();
+		
+		String sql = "from Pessoa "
+                + "";
+   
+		TypedQuery<Pessoa> query = manager.createQuery(sql, Pessoa.class);
+		
+		pessoasEncontradas = (ArrayList<Pessoa>) query.getResultList();
+		
+		for (Pessoa pessoa : pessoasEncontradas) {
+			String sql2 = "from Endereco ender where ender.id_pessoa = :idPessoa";
+	   
+			TypedQuery<Endereco> query2 = manager.createQuery(sql2, Endereco.class);
+			
+			query2.setParameter("idPessoa", pessoa);
+			
+			ArrayList<Endereco> enderecosEncontrados = (ArrayList<Endereco>) query2.getResultList();
+			
+			if(!enderecosEncontrados.isEmpty()) {
+				pessoa.setListaEnderecos(enderecosEncontrados);
+			}
+		}
+		
+		return pessoasEncontradas;
+	}
 
 	public Pessoa guardar(Pessoa pessoa) {
 		Pessoa mergedPerson;
@@ -64,6 +104,14 @@ public class Pessoas implements Serializable {
 
 	public void remover(Pessoa pessoa) {
 		pessoa = porId(pessoa.getId());
+		ArrayList<Endereco> enderecosADeletar = enderecos.findAllEnderecoPorIdPessoa(pessoa);
+		
+		if(!enderecosADeletar.isEmpty()) {
+			for (Endereco endereco : enderecosADeletar) {
+				cadastroEndereco.excluir(endereco);
+			}
+		}
+		
 		manager.remove(pessoa);
 	}
 

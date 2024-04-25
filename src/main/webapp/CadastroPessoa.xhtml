@@ -15,12 +15,8 @@
 <h:body>
 	<!-- Navbar -->
 	<div class="navbar">
-		<ul>
-			<!--<li><h:link value="Cadastro de Pessoas"
-						action="#{ListaDePessoasBean.paginaDeCadastro}" /></li>  -->
-			<li><h:link value="Lista de Cadastrados"
-					action="#{cadastroPessoasBean.paginaListaDeCadastrados}" /></li>
-		</ul>
+		<a href="CadastroPessoa.xhtml" class="button-link">Página de Cadastro</a> <a
+			href="ListaDePessoas.xhtml" class="button-link">Lista de Cadastrados</a>
 	</div>
 	<div id="conteudo">
 		<h:form>
@@ -133,7 +129,8 @@
 					<h:commandButton value="Adicionar Endereço"
 						actionListener="#{cadastroPessoasBean.adicionarEndereco}"
 						styleClass="button-style">
-						<f:ajax execute="@form" render="formEndereco :formTabela:tableEnderecos" />
+						<f:ajax execute="@form"
+							render="formEndereco :formTabela:tableEnderecos" />
 					</h:commandButton>
 				</div>
 			</div>
