@@ -32,19 +32,44 @@
 						</tr>
 					</thead>
 					<tbody>
+					 <c:set var="contadorEnderecos" value="0"/>
 						<c:forEach items="#{cadastroPessoasBean.listaCadastrados}"
-							var="pessoa">
+							var="pessoa" varStatus="loop">
 							<tr>
 								<td>#{pessoa.nome}</td>
 								<td>#{pessoa.idade}</td>
 								<td>#{pessoa.sexo}</td>
-								<td><h:commandButton value="Editar"
-										action="#{cadastroPessoasBean.editarPessoa(pessoa)}"
+								<td><h:commandButton value="Editar" type="button"
+										onclick="mostrarCamposEditarPessoa(#{loop.index})"
 										style="width: 100%;" /> <h:commandButton value="Remover"
 										action="#{cadastroPessoasBean.removerPessoa(pessoa)}"
 										style="width: 100%;">
 										<f:ajax execute="@this" render="formPessoasEnderecos" />
 									</h:commandButton></td>
+								<td colspan="6" style="display: none"
+									id="camposEditarPessoa#{loop.index}"><h:form
+										class="campoOculto">
+										<h:inputText id="nome1"
+											value="#{cadastroPessoasBean.pessoa.nome}" label="nome1" />
+										<p:watermark for="nome1" value="Nome" />
+										<h:inputText id="idade1"
+											value="#{cadastroPessoasBean.pessoa.idade}" label="Idade">
+											<f:validateDoubleRange minimum="0" />
+										</h:inputText>
+										<p:watermark for="idade1" value="Idade" />
+										<h:selectOneMenu id="sexo1"
+											value="#{cadastroPessoasBean.pessoa.sexo}" label="Sexo"
+											required="true">
+											<f:selectItem itemLabel="Selecione.." itemValue=" " />
+											<f:selectItem itemLabel="Masculino" itemValue="M" />
+											<f:selectItem itemLabel="Feminino" itemValue="F" />
+										</h:selectOneMenu>
+										<h:commandButton value="Alterar Pessoa"
+											action="#{cadastroPessoasBean.editarPessoaExistente(pessoa)}"
+											styleClass="button-style">
+											<f:ajax execute="@form" render="formPessoasEnderecos" />
+										</h:commandButton>
+									</h:form></td>
 							</tr>
 							<c:choose>
 								<c:when test="#{not empty pessoa.listaEnderecos}">
@@ -62,21 +87,52 @@
 													</tr>
 												</thead>
 												<tbody>
-													<c:forEach items="#{pessoa.listaEnderecos}" var="endereco">
+													<c:forEach items="#{pessoa.listaEnderecos}" var="endereco"
+														varStatus="loop2">
+														<c:set var="contador" value="#{contador + 1}"/>
 														<tr>
 															<td>#{endereco.estado}</td>
 															<td>#{endereco.cidade}</td>
 															<td>#{endereco.logradouro}</td>
 															<td>#{endereco.numero}</td>
 															<td>#{endereco.cep}</td>
-															<td><h:commandButton value="Editar"
-																	action="#{cadastroPessoasBean.editarEndereco(endereco)}">
-																	<f:ajax execute="@this" render="tabelaEnderecos" />
-																</h:commandButton> <h:commandButton value="Remover"
+															<td><h:commandButton value="Editar" type="button"
+																	onclick="mostrarCamposEditarEndereco(#{contador})" />
+																<h:commandButton value="Remover"
 																	action="#{cadastroPessoasBean.removerEnderecoDePessoa(endereco)}">
 																	<f:ajax execute="@this" render="formPessoasEnderecos" />
 																</h:commandButton></td>
+															<td colspan="6" style="display: none"
+																id="camposEditarEndereco#{contador}"><h:form
+																	class="campoOculto">
+																	<h:inputText id="estado1"
+																		value="#{cadastroPessoasBean.endereco.estado}"
+																		label="Estado" />
+																	<p:watermark for="estado1" value="Estado" />
+																	<h:inputText id="cidade1"
+																		value="#{cadastroPessoasBean.endereco.cidade}"
+																		label="Cidade" />
+																	<p:watermark for="cidade1" value="Cidade" />
+																	<h:inputText id="logradouro1"
+																		value="#{cadastroPessoasBean.endereco.logradouro}"
+																		label="Logradouro" />
+																	<p:watermark for="logradouro1" value="Logradouro" />
+																	<h:inputText id="numero1"
+																		value="#{cadastroPessoasBean.endereco.numero}"
+																		label="Numero" />
+																	<p:watermark for="numero1" value="Numero" />
+																	<h:inputText id="cep1"
+																		value="#{cadastroPessoasBean.endereco.cep}"
+																		label="CEP" />
+																	<p:watermark for="cep1" value="CEP" />
+																	<h:commandButton value="Alterar Endereço"
+																		action="#{cadastroPessoasBean.editarEnderecoPessoaExistente(pessoa,endereco)}"
+																		styleClass="button-style">
+																		<f:ajax execute="@form" render="formPessoasEnderecos" />
+																	</h:commandButton>
+																</h:form></td>
 														</tr>
+
 													</c:forEach>
 												</tbody>
 											</table>
@@ -87,32 +143,37 @@
 									<tr>
 										<td colspan="4">Esta pessoa não possui endereços. <h:commandButton
 												value="Criar Endereço" type="button"
-												onclick="mostrarCamposCriacaoEndereco()" />
+												onclick="mostrarCamposCriacaoEndereco(#{loop.index})" />
 										</td>
-										<h:form>
-											<tr id="camposCriacaoEndereco2" style="display: none;">
-												<td colspan="6"><h:inputText id="estado"
-														value="#{cadastroPessoasBean.endereco.estado}"
-														label="Estado" /> <p:watermark for="estado"
-														value="Estado" /> <h:inputText id="cidade"
-														value="#{cadastroPessoasBean.endereco.cidade}"
-														label="Cidade" /> <p:watermark for="cidade"
-														value="Cidade" /> <h:inputText id="logradouro"
-														value="#{cadastroPessoasBean.endereco.logradouro}"
-														label="Logradouro" /> <p:watermark for="logradouro"
-														value="Logradouro" /> <h:inputText id="numero"
-														value="#{cadastroPessoasBean.endereco.numero}"
-														label="Numero" /> <p:watermark for="numero"
-														value="Numero" /> <h:inputText id="cep"
-														value="#{cadastroPessoasBean.endereco.cep}" label="CEP" />
-													<p:watermark for="cep" value="CEP" /> <h:commandButton
-														value="Adicionar Endereço"
-														actionListener="#{cadastroPessoasBean.adicionarEnderecoPessoaExistente(pessoa)}"
-														styleClass="button-style">
-														<f:ajax execute="@form" render="formPessoasEnderecos" />
-													</h:commandButton></td>
-											</tr>
-										</h:form>
+									<tr id="camposCriacaoEndereco#{loop.index}"
+										style="display: none;">
+										<td colspan="6"><h:form class="campoOculto">
+												<h:inputText id="estado"
+													value="#{cadastroPessoasBean.endereco.estado}"
+													label="Estado" />
+												<p:watermark for="estado" value="Estado" />
+												<h:inputText id="cidade"
+													value="#{cadastroPessoasBean.endereco.cidade}"
+													label="Cidade" />
+												<p:watermark for="cidade" value="Cidade" />
+												<h:inputText id="logradouro"
+													value="#{cadastroPessoasBean.endereco.logradouro}"
+													label="Logradouro" />
+												<p:watermark for="logradouro" value="Logradouro" />
+												<h:inputText id="numero"
+													value="#{cadastroPessoasBean.endereco.numero}"
+													label="Numero" />
+												<p:watermark for="numero" value="Numero" />
+												<h:inputText id="cep"
+													value="#{cadastroPessoasBean.endereco.cep}" label="CEP" />
+												<p:watermark for="cep" value="CEP" />
+												<h:commandButton value="Adicionar Endereço"
+													action="#{cadastroPessoasBean.adicionarEnderecoPessoaExistente(pessoa)}"
+													styleClass="button-style">
+													<f:ajax execute="@form" render="formPessoasEnderecos" />
+												</h:commandButton>
+											</h:form></td>
+									</tr>
 									</tr>
 								</c:otherwise>
 							</c:choose>
@@ -124,11 +185,29 @@
 	</div>
 </h:body>
 <script>
-	function mostrarCamposCriacaoEndereco() {
-		if (document.getElementById('camposCriacaoEndereco2').style.display == 'none') {
-			document.getElementById('camposCriacaoEndereco2').style.display = 'block';
+	function mostrarCamposCriacaoEndereco(index) {
+		var camposCriacaoEndereco = document.getElementById('camposCriacaoEndereco' + index);
+		if (camposCriacaoEndereco.style.display == 'none') {
+			camposCriacaoEndereco.style.display = 'block';
 		} else {
-			document.getElementById('camposCriacaoEndereco2').style.display = 'none';
+			camposCriacaoEndereco.style.display = 'none';
+		}
+	}
+	
+	function mostrarCamposEditarEndereco(index){
+		var camposEditarEndereco = document.getElementById('camposEditarEndereco' + index);
+		if (camposEditarEndereco.style.display == 'none') {
+			camposEditarEndereco.style.display = 'block';
+		} else {
+			camposEditarEndereco.style.display = 'none';
+		}
+	}
+	function mostrarCamposEditarPessoa(index){
+		var camposEditarPessoa = document.getElementById('camposEditarPessoa' + index);
+		if (camposEditarPessoa.style.display == 'none') {
+			camposEditarPessoa.style.display = 'block';
+		} else {
+			camposEditarPessoa.style.display = 'none';
 		}
 	}
 </script>

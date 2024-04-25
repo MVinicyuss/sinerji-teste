@@ -107,6 +107,7 @@ public class CadastroPessoasBean implements Serializable {
 	
 	public void removerEnderecoDePessoa(Endereco enderecoRemover) {
 		cadastroEnderecoService.excluir(enderecoRemover);
+		getListaCadastrados();
 	}
 
 	public void paginaListaDeCadastrados() throws IOException {
@@ -136,11 +137,34 @@ public class CadastroPessoasBean implements Serializable {
 		}
 		novoEndereco.setId_pessoa(pessoaRecebendoEndereco);
 		cadastroEnderecoService.salvar(novoEndereco);
-		endereco = new Endereco();
+		novoEndereco();
+	}
+	
+	public void editarEnderecoPessoaExistente(Pessoa pessoaRecebendoEndereco, Endereco enderecoAntigo) {
+		enderecoAntigo.setEstado(endereco.getEstado());
+	    enderecoAntigo.setCidade(endereco.getCidade());
+	    enderecoAntigo.setLogradouro(endereco.getLogradouro());
+	    enderecoAntigo.setNumero(endereco.getNumero());
+	    enderecoAntigo.setCep(endereco.getCep());
+		
+	    cadastroEnderecoService.salvar(enderecoAntigo);
+		
+		novoEndereco();
+	}
+	
+	public void editarPessoaExistente(Pessoa pessoaAntiga) {
+		pessoaAntiga.setNome(pessoa.getNome());
+		pessoaAntiga.setIdade(pessoa.getIdade());
+		pessoaAntiga.setSexo(pessoa.getSexo());
+		
+	    cadastroPessoaService.salvar(pessoaAntiga);
+		
+		novaPessoa();
 	}
 	
 	public void removerPessoa(Pessoa pessoaRemovida) {
 		cadastroPessoaService.excluir(pessoaRemovida);
+		getListaCadastrados();
 	}
 
 	// Getters e Setters
@@ -176,5 +200,5 @@ public class CadastroPessoasBean implements Serializable {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-
+	
 }
